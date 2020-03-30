@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap-3.3.7.css">
+    <link rel="stylesheet" href="lib/animate.css">
+    <style>
+        li{
+            border:1px dashed #999;
+            margin: 5px;
+            line-height: 35px;
+            padding-left: 5px;
+            width: 100%;/* absolute宽度默认是最小*/
+        }
+        .my-list-enter,
+        .my-list-leave-to{
+            opacity: 0;
+            transform: translateY(80px);
+        }
+        .my-list-enter-active,
+        .my-list-leave-active{
+            transition: all 0.6s ease;
+            position:absolute;
+        }
+
+        /*对于这些“被动”移动的元素来说，也可以实现过渡，这就用到了v-move 特性*/
+        .my-list-move{
+            transition: all 0.6s ease;
+        }
+
+        li:hover{
+            background-color: hotpink;
+            transition: all 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <label>
+                Id:
+                <input type="text"  v-model="id">
+            </label>
+            <label>
+                Name:
+                <input type="text"  v-model="name">
+            </label>
+            <input type="button" @click="add" value="添加">
+        </div>
+            <!--在实现列表过渡的时候,如果需要过渡的元素是通过v-for循环渲染出来的,不能使用transition包裹,需要使用transitionGroup-->
+            <!--如果要为v-for循环创建的元素设置动画,必须为每一个元素设置:key属性-->
+            <!-- 给transition-group添加appear属性,实现页面刚展示出来的时候,入场时候的效果-->
+            <!--通过为transition-group元素设置tag属性,指定transition-group渲染为指定的元素,如果不指定tag属性,默认渲染为span标签-->
+            <transition-group name='my-list' appear tag="ul">
+                <li  v-for="(item,index) in list" :key="item.id" @click="del(index)">
+                    {{item.id}}---{{item.name}}
+                </li>
+            </transition-group>
+    </div>
+</body>
+<script src="lib/vue-2.4.0.js"></script>
+<script>
+    var vm = new Vue({
+        el:"#app",
+        data:{
+          id:'',
+          name:'',
+          list:[
+              {id:1,name:"赵高"},
+              {id:2,name:"秦桧"},
+              {id:3,name:"严嵩"},
+              {id:4,name:"魏忠贤"}
+          ]
+        },
+        methods:{
+            add(){
+                this.list.push({id:this.id,name:this.name});
+                this.id=this.name="";
+            },
+            del(index){
+                this.list.splice(index,1);
+            }
+        }
+    });
+</script>
+</html>

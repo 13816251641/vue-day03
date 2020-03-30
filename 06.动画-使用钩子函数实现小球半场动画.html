@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap-3.3.7.css">
+    <link rel="stylesheet" href="lib/animate.css">
+    <style>
+        .ball{
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="快到碗里来" @click="flag=!flag">
+        <transition @before-enter="beforeEnter"
+                    @enter="enter"
+                    @after-enter="afterEnter">
+            <div class="ball" v-show="flag"></div>
+        </transition>
+
+    </div>
+</body>
+<script src="lib/vue-2.4.0.js"></script>
+<script src="lib/vue-resource-1.3.4.js"></script>
+<script>
+    var vm = new Vue({
+        el:"#app",
+        data:{
+           flag:false
+        },
+        methods:{
+            beforeEnter(el){
+                //设置小球开始动画之前的起始位置
+                el.style.transform="translate(0,0)";
+            },
+            enter(el,done){
+                el.offsetTop;//这句话实际没有任何的作用,如果不写就出不来动画效果,触发重排重绘
+                //设置小球完成动画后的结束状态
+                el.style.transform="translate(150px,450px)";
+                el.style.transition="all 1s ease";
+                done();//这里的done,其实就是afterEnter这个函数,也就是说:done是afterEnter函数的引用
+            },
+            /*
+                动画完成后,会调用afterEnter
+             */
+            afterEnter(el){
+                this.flag=!this.flag;
+            }
+        }
+    });
+</script>
+</html>

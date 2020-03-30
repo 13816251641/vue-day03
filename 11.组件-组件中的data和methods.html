@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap-3.3.7.css">
+    <link rel="stylesheet" href="lib/animate.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <my-com3></my-com3>
+    </div>
+
+    <template id="global">
+        <div>
+            <h1>读取组件中的数据:{{msg}}</h1>
+        </div>
+    </template>
+</body>
+<script src="lib/vue-2.4.0.js"></script>
+<script>
+  /*
+     全局方式定义组件
+     注意:无论是哪种方式创建出来的组件,组件的template属性指向的模板内容,必须有且只有一个根元素
+   */
+  Vue.component("myCom3",{
+      template:"#global",
+      /*
+         1.组件可以有自己的data数据
+         2.组件的data和实例的data有点不一样,实例中的data可以作为一个对象,但是组件中的data必须是一个方法
+         3.组件中的data除了必须为一个方法外,这个方法内部必须返回一个对象才行
+         4.组件中的data数据,使用方式和实例中使用方式完全一样!!!
+       */
+      data(){
+          return {
+              msg:"这是组件中data定义的数据"
+          }
+      }
+  });
+
+  var vm = new Vue({
+      el: "#app"
+  });
+
+</script>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap-3.3.7.css">
+</head>
+<body>
+    <div id="app">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加品牌</h3>
+            </div>
+            <div class="panel-body form-inline">
+                <label>
+                    Name:
+                    <input type="text" v-model="name" class="form-control">
+                </label>
+                <input type="button" value="添加" class="btn btn-primary" @click="add()">
+            </div>
+        </div>
+
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Ctime</th>
+                <th>Operation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="item in list" :key="item.id">
+                <td>{{item.id}}</td>
+                <td v-text="item.name"></td>
+                <td>{{item.ctime | dateFormat}}</td>
+                <td>
+                    <a href="" @click.prevent="del(item.id)">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="lib/vue-2.4.0.js"></script>
+<script src="lib/vue-resource-1.3.4.js"></script>
+<script>
+    /*
+        Note that for the root option to work, the path of the request must be relative.
+        This will use this the root option: Vue.http.get('someUrl') while this will not: Vue.http.get('/someUrl').
+     */
+    Vue.http.options.root="http://localhost:8080/";
+    var vm = new Vue({
+        el:"#app",//表示当前我们new出来的这个Vue实例,要控制页面上的哪个区域
+        data:{ //data属性中,存放的是el中要用到的的数据
+           name:'',
+           list:[
+               {id:1,name:"五菱宏光",ctime:new Date()},
+               {id:2,name: "众泰",ctime: new Date()}
+           ]
+        },
+        created(){
+            this.getAllList();
+        },
+        methods:{
+            del(id){
+                this.$http.get("product/api/v1/del_product/"+id).then(result=>{
+                    if(result.bodyText=="success"){
+                        this.getAllList();
+                        this.name = '';
+                    }
+                })
+            },
+            add(){
+                this.$http.post("product/api/v1/add_product",{name:this.name}).then(result=>{
+                    if(result.bodyText=="success"){
+                        this.getAllList();
+                        this.name = '';
+                    }
+                });
+            },
+            getAllList(){
+                this.$http.get("product/api/v1/get_all_list").then(result=>{
+                    var result = result.body;
+                    this.list = result;
+                })
+            },
+        },
+        filters:{
+            dateFormat(date){
+                var dt = new Date(date);
+                var y = dt.getFullYear();
+                var m = this.padDate(dt.getMonth()+1);
+                var d = dt.getDate();
+
+                var hh = dt.getHours();
+                var mm = this.padDate(dt.getMinutes());
+                var ss = dt.getSeconds().toString().padStart(2,'0');//padStart函数
+                return  `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+
+            }
+        }
+    });
+    //在月份、日期、小时等小于10时前面补0
+    function padDate(value){
+        return value < 10 ? '0'+value : value;
+    }
+</script>
+</html>

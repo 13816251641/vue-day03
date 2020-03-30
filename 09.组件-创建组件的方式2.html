@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap-3.3.7.css">
+    <link rel="stylesheet" href="lib/animate.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <my-com1></my-com1>
+    </div>
+</body>
+<script src="lib/vue-2.4.0.js"></script>
+<script>
+  /*
+     注意:无论是哪种方式创建出来的组件,组件的template属性指向的模板内容,必须有且只有
+     一个根元素
+   */
+  Vue.component("myCom1",{
+      template:"<h3>这是第二种创建组件的方式</h3>"
+  });
+
+  var vm = new Vue({
+      el:"#app"
+  });
+
+</script>
+</html>

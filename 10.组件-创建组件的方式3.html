@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap-3.3.7.css">
+    <link rel="stylesheet" href="lib/animate.css">
+    <style>
+
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <my-com3></my-com3>
+    </div>
+
+
+    <template id="global">
+        <div>
+            <h1>全局:这是通过template元素,在外部定义的组件结构,有代码智能提示和高亮</h1>
+        </div>
+    </template>
+
+    <template id="local">
+        <div>
+            <h1>局部:这是通过template元素,在外部定义的组件结构,有代码智能提示和高亮</h1>
+        </div>
+    </template>
+</body>
+<script src="lib/vue-2.4.0.js"></script>
+<script>
+  /*
+     全局方式定义组件
+     注意:无论是哪种方式创建出来的组件,组件的template属性指向的模板内容,必须有且只有一个根元素
+   */
+  Vue.component("myCom3",{
+      template:"#global"
+  });
+
+
+  var vm = new Vue({
+      el:"#app",
+      /*
+         局部方式定义组件,在#app范围内优先级比全局高
+       */
+      components: {
+          myCom3:{
+              template:"#local"
+          }
+      }
+  });
+
+</script>
+</html>

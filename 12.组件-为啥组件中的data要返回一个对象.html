@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap-3.3.7.css">
+    <link rel="stylesheet" href="lib/animate.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <counter></counter>
+        <hr>
+        <counter></counter>
+        <hr>
+        <counter></counter>
+    </div>
+
+    <template id="global">
+        <div>
+            <input type="button" value="+1" @click="incre">
+            <h3>{{count}}</h3>
+        </div>
+    </template>
+</body>
+<script src="lib/vue-2.4.0.js"></script>
+<script>
+  var obj={count: 0};
+  Vue.component("counter",{
+      template:"#global",
+      data(){
+          return obj;//这样子会有问题哦,各个组件公用一个obj对象
+      },
+      methods:{
+          incre(){
+              this.count++;
+          }
+      }
+  });
+
+  var vm = new Vue({
+      el: "#app"
+  });
+
+</script>
+</html>

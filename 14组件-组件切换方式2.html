@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap-3.3.7.css">
+    <link rel="stylesheet" href="lib/animate.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <a href="" @click.prevent="name='login'">登录</a>
+        <a href="" @click.prevent="name='register'">注册</a>
+        <!-- Vue提供了component,来展示对应名称的组件-->
+        <!--component是一个占位符, :is 属性可以用来指定要展示的组件的名称-->
+        <component v-bind:is="name"></component>
+    </div>
+</body>
+<script src="lib/vue-2.4.0.js"></script>
+<script>
+  //组件名称是字符串
+  Vue.component("login",{
+      template:"<h3>登录组件</h3>"
+  });
+  Vue.component("register",{
+      template:"<h3>注册组件</h3>"
+  });
+
+  var vm = new Vue({
+      el: "#app",
+      data:{
+          name:"login"
+      }
+  });
+
+</script>
+</html>
